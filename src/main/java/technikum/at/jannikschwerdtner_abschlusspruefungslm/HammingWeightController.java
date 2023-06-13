@@ -9,11 +9,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HammingWeightController {
 
-    HammerWeight hammerWeight = new HammerWeight();
+    private int lastNumber;
+
 
     @GetMapping("/hamming")
-    public int calculateHammingWeight(@RequestParam int number) {
-        return hammerWeight.getHammingWeight(number);
+    public int calculateHammingWeight(@RequestParam("number") int number) {
+        lastNumber = number;
+        return getHammingWeight(number);
     }
 
+    @GetMapping("/hamming/last")
+    public int getLastNumber() {
+        return lastNumber % 10;
+    }
+
+    private int getHammingWeight(int number) {
+        int weight = 0;
+        String numberString = String.valueOf(number);
+        for (char c : numberString.toCharArray()) {
+            if (c != '0') {
+                weight++;
+            }
+        }
+        return weight;
+    }
 }
